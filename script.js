@@ -8,11 +8,14 @@ const samplePlayers = [
 function renderTable(players){
   const tbody = document.querySelector('#rankingTable tbody');
   tbody.innerHTML = '';
-  // ordenar por posición si existe, sino por puntos desc
   players.sort((a,b)=> (a.pos ?? Number.MAX_SAFE_INTEGER) - (b.pos ?? Number.MAX_SAFE_INTEGER));
   players.forEach(p=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${p.pos ?? ''}</td><td>${escapeHtml(p.nombre)}</td><td>${escapeHtml(p.apellido)}</td><td>${p.puntos ?? ''}</td>`;
+    tr.innerHTML = `
+      <td class="col-pos">${p.pos ?? ''}</td>
+      <td class="col-jugador">${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}</td>
+      <td class="col-puntos">${p.puntos ?? ''}</td>
+    `;
     tbody.appendChild(tr);
   });
 }
