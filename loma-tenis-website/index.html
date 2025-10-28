@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ranking Loma Verde Tenis</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <img src="assets/LogoLomaTenis.jpeg" alt="Loma Verde Tenis" class="logo">
+    <h1>Ranking - Club Privado Loma Verde</h1>
+  </header>
+
+  <main class="container">
+    <section class="controls">
+      <label class="file-label">
+        Importar jugadores (CSV):
+        <input id="csvFileInput" type="file" accept=".csv" />
+      </label>
+      <button id="downloadSample">Descargar CSV de ejemplo</button>
+    </section>
+
+    <section class="table-wrap">
+      <table id="rankingTable">
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas generadas por JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <section class="add-sample">
+      <button id="addSampleData">Agregar datos de ejemplo</button>
+      <button id="clearTable">Limpiar tabla</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Generado para Club Privado Loma Verde — Demo simple</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
