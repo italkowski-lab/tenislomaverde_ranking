@@ -36,3 +36,7 @@ th.col-puntos, td.col-puntos {
 th.col-jugador, td.col-jugador {
   width: auto;
 }
+/* Centrar los títulos de las columnas */
+th {
+  text-align: center;
+}
