@@ -48,28 +48,27 @@ function handleFile(evt){
   reader.readAsText(file, 'UTF-8');
 }
 
-function parseCSV(text){
-  // simple CSV parser: espera encabezado con columnas nombre,apellido,posicion,puntos (puede variar)
-  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length>0);
-  if(lines.length===0) return [];
-  const header = lines[0].split(',').map(h=>h.trim().toLowerCase());
-  const idx = {
-    nombre: header.indexOf('nombre'),
-    apellido: header.indexOf('apellido'),
-    posicion: header.indexOf('posicion'),
-    puntos: header.indexOf('puntos'),
-    position_alt: header.indexOf('pos') // alternativa
-  };
-  const rows = lines.slice(1).map(line=>{
-    const cols = line.split(',').map(c=>c.trim());
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length === 0) return [];
+
+  return lines.slice(1).map(line => {
+    // detectamos delimitador correcto
+    const sep = line.includes(';') ? ';' : ',';
+    const cols = line.split(sep).map(c => c.trim()).filter(Boolean);
+
+    // normalmente viene algo como ["1", "GONZALO LEMME", "19.600", "0"]
+    const pos = parseInt(cols[0]);
+    const nombre = cols[1] || '';
+    const puntos = parseFloat((cols[2] || '0').replace(/\./g, '').replace(',', '.'));
+
     return {
-      nombre: idx.nombre>=0 ? cols[idx.nombre] : (cols[0]||''),
-      apellido: idx.apellido>=0 ? cols[idx.apellido] : (cols[1]||''),
-      pos: (idx.posicion>=0 ? parseInt(cols[idx.posicion]) : (idx.position_alt>=0 ? parseInt(cols[idx.position_alt]) : undefined)) || undefined,
-      puntos: idx.puntos>=0 ? parseInt(cols[idx.puntos]) : (cols[2] ? parseInt(cols[2]) : undefined)
+      pos: isNaN(pos) ? undefined : pos,
+      nombre,
+      apellido: '',
+      puntos: isNaN(puntos) ? 0 : puntos
     };
-  }).filter(r=> r.nombre || r.apellido);
-  return rows;
+  }).filter(r => r.nombre);
 }
 
 // sample CSV download
