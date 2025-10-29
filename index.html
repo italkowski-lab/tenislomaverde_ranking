@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ranking Tenis - Club Privado Loma Verde</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ranking Tenis | Club Privado Loma Verde</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <img src="LogoLomaTenis.jpeg" alt="Loma Verde Tenis" class="logo">
+    <img src="assets/logo-loma-verde.png" alt="Club Privado Loma Verde" class="logo" />
     <h1>Ranking Tenis</h1>
     <h2>Club Privado Loma Verde</h2>
   </header>
@@ -23,37 +23,40 @@
             <th>Puntos</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <!-- Filas dinámicas se cargarán aquí -->
+        </tbody>
       </table>
-
-      <!-- Panel solo visible al administrador -->
-      <div id="adminPanel" style="display:none; margin-top: 40px;">
-        <h3>Importar jugadores (CSV)</h3>
-        <input type="file" id="csvFile" accept=".csv">
-        <span id="fileName"></span>
-      </div>
-
-      <!-- Botón oculto para abrir el login -->
-      <button id="adminLoginBtn" class="hidden-login-btn"></button>
-
-      <!-- Modal de login -->
-      <div id="loginModal" class="modal">
-        <div class="modal-content">
-          <span id="closeModal" class="close">&times;</span>
-          <h3>Acceso Administrador</h3>
-          <input type="text" id="adminUser" placeholder="Usuario">
-          <input type="password" id="adminPass" placeholder="Contraseña">
-          <button id="loginBtn">Ingresar</button>
-          <p id="loginError" style="color:red; display:none;">Usuario o contraseña incorrectos</p>
-        </div>
-      </div>
     </section>
   </main>
 
   <footer>
-    <p>© Club Privado Loma Verde - Ranking Tenis</p>
+    © Club Privado Loma Verde - Ranking Tenis
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Botón oculto para abrir el login -->
+  <button class="hidden-login-btn" id="openLogin"></button>
+
+  <!-- Modal de login -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Acceso Administrador</h3>
+      <input type="text" id="username" placeholder="Usuario" />
+      <input type="password" id="password" placeholder="Contraseña" />
+      <button id="loginBtn">Ingresar</button>
+    </div>
+  </div>
+
+  <script>
+    // Mostrar modal al hacer clic en el botón oculto
+    const openBtn = document.getElementById("openLogin");
+    const modal = document.getElementById("loginModal");
+    const closeModal = document.getElementById("closeModal");
+
+    openBtn.onclick = () => modal.style.display = "block";
+    closeModal.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+  </script>
 </body>
 </html>
