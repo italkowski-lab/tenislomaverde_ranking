@@ -82,10 +82,10 @@
         }
 
         // *******************************************************************
-        // LÓGICA DE LOGIN DE ADMINISTRADOR
+        // LÓGICA DE LOGIN DE ADMINISTRADOR (Mantenida)
         // *******************************************************************
 
-        // CORRECCIÓN CLAVE: Abrir modal de Admin
+        // Abrir modal de Admin
         if (adminBtn) {
             adminBtn.addEventListener("click", () => {
                 adminModal.style.display = "block";
@@ -126,7 +126,7 @@
         });
 
         // *******************************************************************
-        // LÓGICA: CARGA Y PROCESAMIENTO DE CSV
+        // LÓGICA: CARGA Y PROCESAMIENTO DE CSV (Ajustada)
         // *******************************************************************
         
         // 1. Al hacer clic en "Subir CSV", se activa el input de archivo
@@ -146,14 +146,22 @@
 
                 reader.onload = function(event) {
                     const csvData = event.target.result;
-                    const players = parseAndSortCSV(csvData); 
-                    updateRankingTable(players); 
-                    alert("Ranking actualizado exitosamente con " + players.length + " jugadores.");
-                    // Resetear el input para permitir cargar el mismo archivo dos veces
+                    try {
+                        const players = parseAndSortCSV(csvData);
+                        if (players.length > 0) {
+                            updateRankingTable(players); 
+                            alert("Ranking actualizado exitosamente con " + players.length + " jugadores.");
+                        } else {
+                            alert("Error: No se encontraron jugadores válidos. Chequee el formato CSV.");
+                        }
+                    } catch (error) {
+                        console.error("Error al procesar CSV:", error);
+                        alert("Ocurrió un error al procesar el archivo. Verifique el formato (separador ';').");
+                    }
                     csvFileInput.value = ''; 
                 };
 
-                // Leer el archivo como texto (encoding UTF-8)
+                // Lectura con encoding explícito para mayor compatibilidad
                 reader.readAsText(file, 'UTF-8');
             });
         }
@@ -164,22 +172,27 @@
          * omite el encabezado y ordena por puntos.
          */
         function parseAndSortCSV(csvText) {
-            const lines = csvText.split('\n').filter(line => line.trim() !== '');
+            // Dividir por saltos de línea (manejando CR y LF) y filtrar líneas vacías
+            const lines = csvText.replace(/\r/g, '').split('\n').filter(line => line.trim() !== '');
+            
             // Omitimos la primera línea (encabezado)
             const dataLines = lines.slice(1);
             const players = [];
 
             dataLines.forEach(line => {
-                // Usamos el punto y coma (;) como delimitador
+                // Usamos el punto y coma (;) como delimitador. 
+                // Usamos una expresión regular para manejar múltiples espacios y el trim() ya lo hace.
                 const columns = line.split(';').map(col => col.trim());
                 
-                // Asumiendo que Jugador está en la Columna 1 y Puntos en la Columna 2
+                // Asumiendo que Jugador está en la Columna 1 (índice 0) y Puntos en la Columna 2 (índice 1)
                 const nombre = columns[0];
                 const puntosStr = columns[1];
 
                 if (nombre && puntosStr) {
-                    // Intentamos convertir los puntos a número
-                    const puntos = parseInt(puntosStr.replace(/\./g, ''), 10);
+                    // Limpiamos los separadores de miles (puntos) antes de convertir a número
+                    const puntosLimpio = puntosStr.replace(/\./g, '');
+                    const puntos = parseInt(puntosLimpio, 10);
+                    
                     if (!isNaN(puntos)) {
                         players.push({ nombre, puntos });
                     }
@@ -196,7 +209,7 @@
          * Actualiza el cuerpo de la tabla con los nuevos datos.
          */
         function updateRankingTable(players) {
-            if (!rankingBody) return; // Si la tabla no existe, salimos
+            if (!rankingBody) return; 
 
             rankingBody.innerHTML = ''; // Limpiar contenido actual
 
@@ -205,6 +218,11 @@
                 
                 // Columna 1: Posición (números consecutivos a partir del 1)
                 const posCell = row.insertCell();
+                // Destacamos los primeros 3 (para la estética)
+                if (index < 3) {
+                   posCell.classList.add('top-rank');
+                   row.classList.add('top-row');
+                }
                 posCell.textContent = index + 1; 
 
                 // Columna 2: Jugador
