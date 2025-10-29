@@ -49,7 +49,7 @@ body {
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
-    overflow: hidden; /* Para que el border-radius funcione con la tabla */
+    overflow: hidden; 
 }
 
 #rankingTable th, #rankingTable td {
@@ -81,8 +81,7 @@ body {
     font-size: 1.1em;
 }
 
-
-/* --- Controles de Admin (Posicionamiento - Manteniendo lógica anterior) --- */
+/* --- Controles de Admin (Posicionamiento) --- */
 
 .admin-controls-container {
     position: fixed;
