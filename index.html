@@ -29,6 +29,22 @@
       </table>
     </section>
   </main>
+  <!-- Botón oculto de admin -->
+<button id="adminBtn" class="admin-btn">admin</button>
+
+<!-- Modal de login -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeLogin">&times;</span>
+    <h3>Acceso Administrador</h3>
+    <input type="text" id="username" placeholder="Usuario" />
+    <input type="password" id="password" placeholder="Contraseña" />
+    <button id="loginSubmit">Ingresar</button>
+  </div>
+</div>
+
+<!-- Botón que aparece solo al loguearse -->
+<button id="uploadBtn" class="upload-btn" style="display:none;">Subir CSV</button>
 
   <footer>
     © Club Privado Loma Verde - Ranking Tenis
