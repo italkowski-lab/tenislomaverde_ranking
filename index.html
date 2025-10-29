@@ -9,47 +9,51 @@
 <body>
   <header>
     <img src="LogoLomaTenis.jpeg" alt="Loma Verde Tenis" class="logo">
-    <h1>Ranking Tenis - Club Privado Loma Verde</h1>
+    <h1>Ranking Tenis</h1>
+    <h2>Club Privado Loma Verde</h2>
   </header>
 
   <main>
-    <table id="rankingTable">
-      <thead>
-        <tr>
-          <th>Posición</th>
-          <th>Jugador</th>
-          <th>Puntos</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <section class="ranking-section">
+      <table id="rankingTable">
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>Jugador</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-    <!-- Sección solo para administrador -->
-    <div id="adminPanel" style="display:none; margin-top: 30px;">
-      <h3>Importar jugadores (CSV)</h3>
-      <input type="file" id="csvFile" accept=".csv">
-      <span id="fileName"></span>
-    </div>
-
-    <!-- Botón oculto para abrir el login -->
-    <button id="adminLoginBtn" class="hidden-login-btn"></button>
-
-    <!-- Modal de login -->
-    <div id="loginModal" class="modal">
-      <div class="modal-content">
-        <span id="closeModal" class="close">&times;</span>
-        <h3>Acceso Administrador</h3>
-        <input type="text" id="adminUser" placeholder="Usuario">
-        <input type="password" id="adminPass" placeholder="Contraseña">
-        <button id="loginBtn">Ingresar</button>
-        <p id="loginError" style="color:red; display:none;">Usuario o contraseña incorrectos</p>
+      <!-- Panel solo visible al administrador -->
+      <div id="adminPanel" style="display:none; margin-top: 40px;">
+        <h3>Importar jugadores (CSV)</h3>
+        <input type="file" id="csvFile" accept=".csv">
+        <span id="fileName"></span>
       </div>
-    </div>
+
+      <!-- Botón oculto para abrir el login -->
+      <button id="adminLoginBtn" class="hidden-login-btn"></button>
+
+      <!-- Modal de login -->
+      <div id="loginModal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal" class="close">&times;</span>
+          <h3>Acceso Administrador</h3>
+          <input type="text" id="adminUser" placeholder="Usuario">
+          <input type="password" id="adminPass" placeholder="Contraseña">
+          <button id="loginBtn">Ingresar</button>
+          <p id="loginError" style="color:red; display:none;">Usuario o contraseña incorrectos</p>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js"></script>
-</body>
-</html>
+  <footer>
+    <p>© Club Privado Loma Verde - Ranking Tenis</p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
