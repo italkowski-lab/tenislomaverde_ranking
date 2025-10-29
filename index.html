@@ -48,8 +48,13 @@
     </main>
 
     <div class="admin-controls-container">
-        <button id="adminBtn" class="admin-button">Admin</button>
-        <button id="uploadBtn" class="admin-button upload-button" style="display: none;">Subir CSV</button>
+        <div class="admin-controls-container">
+    <button id="adminBtn" class="admin-button">Admin</button>
+    
+    <button id="uploadBtn" class="admin-button upload-button" style="display: none;">Subir CSV</button>
+    
+    <input type="file" id="csvFile" accept=".csv" style="display: none;">
+</div>
     </div>
 
     <div id="loginModal" class="modal">
