@@ -1,103 +1,170 @@
-/* admin.css */
+/* styles.css */
 
-/* --- Controles de Admin (Posicionamiento) --- */
-
-.admin-controls-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 5; /* Asegura que esté visible */
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.admin-button {
-    background-color: #333;
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+/* --- Estilos de la Home (Fondo y Contenido) --- */
+
+.home-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative; /* Contenedor principal para posicionar la imagen y el overlay */
+}
+
+/* Estilo para la imagen HTML de fondo */
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que cubra toda el área */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Nivel inferior */
+}
+
+/* Contenido que se superpone a la imagen */
+.content-overlay {
+    position: relative; /* Permite posicionar el contenido sobre la imagen */
+    z-index: 2; /* Nivel superior */
+    width: 90%; 
+    max-width: 1200px; 
+    padding-top: 20px;
+    margin: 0 auto; /* Centrar el overlay */
+}
+
+/* --- Estilos de la Barra de Navegación (Navbar) --- */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px; 
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.5em;
+    color: #007bff;
+    letter-spacing: -0.5px;
+}
+
+.nav-links a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #555;
+    font-size: 1em;
+    transition: color 0.2s;
+}
+.nav-links a:hover {
+    color: #007bff;
+}
+
+.cta-button {
+    background-color: #007bff; 
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.cta-button:hover {
+    background-color: #0056b3;
 }
 
-.admin-button:hover {
-    background-color: #555;
+.user-name {
+    padding: 10px 20px;
+    font-weight: 600;
+    color: #007bff;
+    background-color: #e9f5ff;
+    border-radius: 5px;
 }
 
-.upload-button {
-    background-color: #28a745; /* Verde para el botón de subir */
+/* --- Estilos del Hero Content (Texto Azul) --- */
+
+.hero-content {
+    padding: 0 20px; 
 }
 
-.upload-button:hover {
-    background-color: #1e7e34;
+.text-box {
+    max-width: 550px;
 }
 
-/* --- Modal Estilos --- */
+.hero-content h1 {
+    font-size: 2.8em;
+    font-weight: 800;
+    color: white; 
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 1.1em;
+    color: #cce0ff;
+    margin-bottom: 30px;
+}
+
+.explorar-button {
+    background-color: white;
+    color: #007bff;
+    border: 2px solid white;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+/* --- Estilos del Modal de Usuario (Solo si se requiere distinción) --- */
 
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
-    z-index: 10; /* Debe estar por encima de todo */
+    z-index: 100;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5); /* Fondo semitransparente */
-    padding-top: 100px;
+    background-color: rgba(0,0,0,0.6);
+    padding-top: 60px;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 350px;
+    margin: 8% auto;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 90%; 
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .close-button {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: bold;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    line-height: 1;
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.input-group input[type="text"],
-.input-group input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.login-submit-button {
-    width: 100%;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 10px;
-}
+/* ... otros estilos de modal ... */
