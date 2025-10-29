@@ -3,66 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEARNEXT - Ecosistema Educativo</title>
+    <title>Ranking Tenis Loma Verde</title>
     <link rel="stylesheet" href="styles.css"> 
-    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     
-    <div class="home-container" id="home-container">
-        
-        <img src="assets/hero-desktop_v2.png" alt="Ecosistema Educativo" class="background-image">
-        
-        <div class="content-overlay">
-            
-            <header class="navbar">
-                <div class="logo">
-                    LEARNEXT
-                </div>
-                <nav class="nav-links">
-                    <a href="#">Áreas</a>
-                    <a href="#">Ecosistema</a>
-                    <a href="#">Ministerio</a>
-                </nav>
-                <button id="login-button" class="cta-button">Ingresar</button>
-                <span id="user-display" class="user-name" style="display:none;"></span>
-            </header>
+    <header class="header-container">
+        <img src="assets/LogoLomaTenis.jpeg" alt="Logo Loma Verde Tenis" class="logo-tenis">
+        <h1>Ranking Tenis Loma Verde</h1>
+    </header>
 
-            <main class="hero-content">
-                <div class="text-box">
-                    <h1>El Ecosistema del Futuro Educativo</h1>
-                    <p>Impulsa tu potencial y alcanza el éxito en tu carrera con nuestra plataforma de aprendizaje</p>
-                    <button class="explorar-button">Explorá tu camino</button>
-                </div>
-                </main>
-        </div>
-    </div>
+    <main class="ranking-container">
+        <table id="rankingTable">
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Jugador</th>
+                    <th>Puntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Juan Martín</td>
+                    <td>1500</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Esteban Pérez</td>
+                    <td>1450</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Mariana Lopez</td>
+                    <td>1320</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Sebastián Gómez</td>
+                    <td>1280</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
 
-    <div id="login-modal" class="modal user-modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Iniciar Sesión</h2>
-            <form id="login-form">
-                <div class="input-group">
-                    <label for="username-input">Usuario o Email:</label>
-                    <input type="text" id="username-input" required>
-                </div>
-                <div class="input-group">
-                    <label for="password-input">Contraseña:</label>
-                    <input type="password" id="password-input" required>
-                </div>
-                <p id="login-error" class="error-message" style="display:none;">Usuario o contraseña incorrectos.</p>
-                <button type="submit" class="cta-button">Entrar</button>
-            </form>
-        </div>
-    </div>
-    
     <div class="admin-controls-container">
         <button id="adminBtn" class="admin-button">Admin</button>
         <button id="uploadBtn" class="admin-button upload-button" style="display: none;">Subir CSV</button>
     </div>
 
-    <div id="loginModal" class="modal admin-login-modal">
+    <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="closeLogin">&times;</span>
             <h2>Acceso de Administrador</h2>
@@ -82,85 +72,18 @@
 
 
     <script>
-        // --- DATA DE USUARIOS ---
-        const USERS = [
-            { username: 'alumno1', email: 'a1@learnext.com', password: 'pass123', name: 'Juan Pérez' },
-            { username: 'mentor', email: 'mentor@learnext.com', password: 'mentor1', name: 'María García' },
-            { username: 'admin', email: 'admin@learnext.com', password: 'admin', name: 'Admin Learnext' }
-        ];
-
         // --- DATA DE ADMIN ---
         const ADMIN_USER = "subcoloma";
         const ADMIN_PASS = "654321";
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- ELEMENTOS DE LA HOME (USUARIO) ---
-            const loginButton = document.getElementById('login-button');
-            const userDisplay = document.getElementById('user-display');
-            const userModal = document.getElementById('login-modal'); // Modal de usuario
-            const userCloseButton = userModal.querySelector('.close-button');
-            const loginForm = document.getElementById('login-form');
-            const loginError = document.getElementById('login-error');
-
             // --- ELEMENTOS DEL ADMIN ---
             const adminBtn = document.getElementById("adminBtn");
-            const adminModal = document.getElementById("loginModal"); // Modal de Admin
+            const adminModal = document.getElementById("loginModal");
             const closeLogin = document.getElementById("closeLogin");
             const loginSubmit = document.getElementById("loginSubmit");
             const uploadBtn = document.getElementById("uploadBtn");
-
-            // **********************************************
-            // LÓGICA DE LOGIN DE USUARIO (HOME - INGRESAR)
-            // **********************************************
-
-            loginButton.onclick = function() {
-                userModal.style.display = 'block';
-                loginError.style.display = 'none';
-                loginForm.reset();
-            };
-
-            userCloseButton.onclick = function() {
-                userModal.style.display = 'none';
-            };
-
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const usernameInput = document.getElementById('username-input').value.trim();
-                const passwordInput = document.getElementById('password-input').value.trim();
-                
-                const user = USERS.find(u => 
-                    (u.username === usernameInput || u.email === usernameInput) && u.password === passwordInput
-                );
-
-                if (user) {
-                    localStorage.setItem('currentUser', user.name); 
-                    window.location.reload(); 
-                } else {
-                    loginError.style.display = 'block';
-                }
-            });
-
-            function checkUserLoginStatus() {
-                const userName = localStorage.getItem('currentUser');
-                
-                if (userName) {
-                    loginButton.style.display = 'none';
-                    userDisplay.textContent = userName;
-                    userDisplay.style.display = 'inline-block';
-                } else {
-                    loginButton.style.display = 'inline-block';
-                    userDisplay.style.display = 'none';
-                }
-            }
-            
-            checkUserLoginStatus();
-
-
-            // **********************************************
-            // LÓGICA DE LOGIN DE ADMINISTRADOR
-            // **********************************************
 
             // Función para limpiar los campos del login de admin
             function resetAdminLoginForm() {
@@ -189,17 +112,16 @@
                     adminBtn.style.display = "none";
                     uploadBtn.style.display = "block";
                     alert("Acceso concedido. Botón de subir CSV activado.");
-                    // En un sitio real, aquí se establecería una sesión de administrador
                 } else {
                     alert("Usuario o contraseña incorrectos");
                     document.getElementById("password").value = "";
                 }
             });
 
-            // Cerrar modal si se hace clic fuera (Para ambos modales)
+            // Cerrar modal si se hace clic fuera
             window.addEventListener("click", (e) => {
-                if (e.target.classList.contains('modal')) {
-                    e.target.style.display = "none";
+                if (e.target === adminModal) {
+                    adminModal.style.display = "none";
                 }
             });
         });
