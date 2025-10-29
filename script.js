@@ -1,89 +1,81 @@
-// script para manejar la tabla de ranking y la importación CSV
-const samplePlayers = [
-  {pos: 1, nombre: 'Juan', apellido: 'Perez', puntos: 1200},
-  {pos: 2, nombre: 'María', apellido: 'Gomez', puntos: 1150},
-  {pos: 3, nombre: 'Carlos', apellido: 'Lopez', puntos: 980},
-];
+document.addEventListener("DOMContentLoaded", () => {
+  const csvFileInput = document.getElementById("csvFile");
+  const tableBody = document.querySelector("#rankingTable tbody");
+  const fileName = document.getElementById("fileName");
 
-function renderTable(players){
-  const tbody = document.querySelector('#rankingTable tbody');
-  tbody.innerHTML = '';
-  players.sort((a,b)=> (a.pos ?? Number.MAX_SAFE_INTEGER) - (b.pos ?? Number.MAX_SAFE_INTEGER));
-  players.forEach(p=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="col-pos">${p.pos ?? ''}</td>
-      <td class="col-jugador">${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}</td>
-      <td class="col-puntos">${p.puntos ?? ''}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
+  const adminLoginBtn = document.getElementById("adminLoginBtn");
+  const loginModal = document.getElementById("loginModal");
+  const closeModal = document.getElementById("closeModal");
+  const loginBtn = document.getElementById("loginBtn");
+  const adminPanel = document.getElementById("adminPanel");
+  const loginError = document.getElementById("loginError");
 
-function escapeHtml(text){
-  if(text === undefined || text === null) return '';
-  return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-}
+  // LOGIN
+  adminLoginBtn.addEventListener("click", () => loginModal.style.display = "block");
+  closeModal.addEventListener("click", () => loginModal.style.display = "none");
 
-// handlers
-document.getElementById('addSampleData').addEventListener('click', ()=> renderTable(samplePlayers.slice()));
-document.getElementById('clearTable').addEventListener('click', ()=> renderTable([]));
+  loginBtn.addEventListener("click", () => {
+    const user = document.getElementById("adminUser").value.trim();
+    const pass = document.getElementById("adminPass").value.trim();
 
-document.getElementById('csvFileInput').addEventListener('change', handleFile, false);
-
-function handleFile(evt){
-  const file = evt.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const text = e.target.result;
-    const players = parseCSV(text);
-    // if positions not provided, assign by points desc
-    if(players.every(p=> !p.pos)){
-      players.sort((a,b)=> (b.puntos||0) - (a.puntos||0));
-      players.forEach((p,i)=> p.pos = i+1);
+    if (user === "subcotenis" && pass === "654321") {
+      adminPanel.style.display = "block";
+      loginModal.style.display = "none";
+      loginError.style.display = "none";
+    } else {
+      loginError.style.display = "block";
     }
-    renderTable(players);
-  };
-  reader.readAsText(file, 'UTF-8');
-}
+  });
 
-function parseCSV(text) {
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
-  if (lines.length === 0) return [];
+  window.addEventListener("click", e => {
+    if (e.target === loginModal) loginModal.style.display = "none";
+  });
 
-  return lines.slice(1).map(line => {
-    // detectamos delimitador correcto
-    const sep = line.includes(';') ? ';' : ',';
-    const cols = line.split(sep).map(c => c.trim()).filter(Boolean);
+  // IMPORTAR CSV
+  csvFileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-    // normalmente viene algo como ["1", "GONZALO LEMME", "19.600", "0"]
-    const pos = parseInt(cols[0]);
-    const nombre = cols[1] || '';
-    const puntos = parseFloat((cols[2] || '0').replace(/\./g, '').replace(',', '.'));
-
-    return {
-      pos: isNaN(pos) ? undefined : pos,
-      nombre,
-      apellido: '',
-      puntos: isNaN(puntos) ? 0 : puntos
+    fileName.textContent = `Archivo cargado: ${file.name}`;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const data = parseCSV(text);
+      renderTable(data);
     };
-  }).filter(r => r.nombre);
-}
+    reader.readAsText(file);
+  });
 
-// sample CSV download
-document.getElementById('downloadSample').addEventListener('click', ()=>{
-  const csv = 'nombre,apellido,posicion,puntos\nJuan,Perez,1,1200\nMaría,Gomez,2,1150\nCarlos,Lopez,3,980\n';
-  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'players_sample.csv';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  function parseCSV(text) {
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) return [];
+
+    return lines.slice(1).map(line => {
+      const sep = line.includes(';') ? ';' : ',';
+      const cols = line.split(sep).map(c => c.trim()).filter(Boolean);
+
+      const pos = parseInt(cols[0]);
+      const nombre = cols[1] || '';
+      const puntos = parseFloat((cols[2] || '0').replace(/\./g, '').replace(',', '.'));
+
+      return {
+        pos: isNaN(pos) ? '' : pos,
+        nombre,
+        puntos: isNaN(puntos) ? 0 : puntos
+      };
+    }).filter(r => r.nombre);
+  }
+
+  function renderTable(data) {
+    tableBody.innerHTML = "";
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.pos}</td>
+        <td>${row.nombre}</td>
+        <td>${row.puntos}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
 });
-
-// al cargar, mostramos tabla vacía
-renderTable([]);
