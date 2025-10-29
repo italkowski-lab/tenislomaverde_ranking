@@ -146,30 +146,31 @@
 
                 reader.onload = function(event) {
                     const csvData = event.target.result;
+                    let players = [];
                     try {
-                        const players = parseAndSortCSV(csvData);
+                        players = parseAndSortCSV(csvData);
                         if (players.length > 0) {
                             updateRankingTable(players); 
                             alert("Ranking actualizado exitosamente con " + players.length + " jugadores.");
                         } else {
+                            console.error("No se pudieron parsear jugadores válidos. Revise la Consola (F12) para ver la data leída.");
                             alert("Error: No se encontraron jugadores válidos. Chequee el formato CSV.");
                         }
                     } catch (error) {
-                        console.error("Error al procesar CSV:", error);
-                        alert("Ocurrió un error al procesar el archivo. Verifique el formato (separador ';').");
+                        console.error("Error fatal al procesar CSV:", error);
+                        alert("Ocurrió un error al procesar el archivo. Verifique el formato.");
                     }
                     csvFileInput.value = ''; 
                 };
 
-                // Lectura con encoding explícito para mayor compatibilidad
                 reader.readAsText(file, 'UTF-8');
             });
         }
 
 
         /**
-         * Parsea la data del CSV (separado por punto y coma), 
-         * omite el encabezado y ordena por puntos.
+         * Parsea la data del CSV (separado por punto y coma)
+         * Se ajusta para manejar la columna inicial vacía y el formato de puntos regional.
          */
         function parseAndSortCSV(csvText) {
             // Dividir por saltos de línea (manejando CR y LF) y filtrar líneas vacías
@@ -179,21 +180,24 @@
             const dataLines = lines.slice(1);
             const players = [];
 
-            dataLines.forEach(line => {
-                // Usamos el punto y coma (;) como delimitador. 
-                // Usamos una expresión regular para manejar múltiples espacios y el trim() ya lo hace.
+            dataLines.forEach((line) => {
+                
+                // Dividimos por punto y coma. El primer elemento columns[0] estará vacío.
                 const columns = line.split(';').map(col => col.trim());
                 
-                // Asumiendo que Jugador está en la Columna 1 (índice 0) y Puntos en la Columna 2 (índice 1)
-                const nombre = columns[0];
-                const puntosStr = columns[1];
+                // Las columnas relevantes inician en el índice 1:
+                // Columna 1 (columns[1]) es POSICION (que ignoramos)
+                const nombre = columns[2]; // Jugador
+                const puntosStr = columns[3]; // Puntos
 
                 if (nombre && puntosStr) {
-                    // Limpiamos los separadores de miles (puntos) antes de convertir a número
-                    const puntosLimpio = puntosStr.replace(/\./g, '');
+                    // 1. Limpiamos separadores de miles (el punto '.')
+                    // 2. Quitamos la coma decimal y todo lo que le sigue (ej: ',0' o ',5')
+                    const puntosLimpio = puntosStr.replace(/\./g, '').split(',')[0];
+                    
                     const puntos = parseInt(puntosLimpio, 10);
                     
-                    if (!isNaN(puntos)) {
+                    if (!isNaN(puntos) && puntos >= 0) {
                         players.push({ nombre, puntos });
                     }
                 }
@@ -218,11 +222,6 @@
                 
                 // Columna 1: Posición (números consecutivos a partir del 1)
                 const posCell = row.insertCell();
-                // Destacamos los primeros 3 (para la estética)
-                if (index < 3) {
-                   posCell.classList.add('top-rank');
-                   row.classList.add('top-row');
-                }
                 posCell.textContent = index + 1; 
 
                 // Columna 2: Jugador
