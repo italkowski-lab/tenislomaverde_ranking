@@ -141,3 +141,37 @@ footer {
 .close:hover {
   color: #000;
 }
+/* --- Botón admin discreto --- */
+.admin-btn {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  background: transparent;
+  color: #ccc;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+.admin-btn:hover {
+  opacity: 1;
+  color: #0b683b;
+}
+
+/* --- Botón subir CSV --- */
+.upload-btn {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: #0b683b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.upload-btn:hover {
+  background-color: #095a33;
+}
