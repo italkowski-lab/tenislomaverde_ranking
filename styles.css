@@ -5,137 +5,121 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
+body {
+    background-color: #f4f4f4;
+    padding: 20px;
 }
 
-/* --- Estilos de la Home (Fondo y Contenido) --- */
-
-.home-container {
-    width: 100vw;
-    height: 100vh;
-    position: relative; /* Contenedor principal para posicionar la imagen y el overlay */
-}
-
-/* Estilo para la imagen HTML de fondo */
-.background-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Asegura que cubra toda el área */
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; /* Nivel inferior */
-}
-
-/* Contenido que se superpone a la imagen */
-.content-overlay {
-    position: relative; /* Permite posicionar el contenido sobre la imagen */
-    z-index: 2; /* Nivel superior */
-    width: 90%; 
-    max-width: 1200px; 
-    padding-top: 20px;
-    margin: 0 auto; /* Centrar el overlay */
-}
-
-/* --- Estilos de la Barra de Navegación (Navbar) --- */
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: white; 
+/* --- Encabezado --- */
+.header-container {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-    font-weight: 800;
-    font-size: 1.5em;
-    color: #007bff;
-    letter-spacing: -0.5px;
+.logo-tenis {
+    width: 150px; /* Ajusta el tamaño del logo */
+    height: auto;
+    margin-bottom: 10px;
 }
 
-.nav-links a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #555;
-    font-size: 1em;
-    transition: color 0.2s;
-}
-.nav-links a:hover {
-    color: #007bff;
+.header-container h1 {
+    color: #38761D; /* Verde de tenis */
+    font-size: 2.5em;
+    font-weight: bold;
 }
 
-.cta-button {
-    background-color: #007bff; 
+/* --- Tabla de Ranking --- */
+.ranking-container {
+    display: flex;
+    justify-content: center;
+}
+
+#rankingTable {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden; /* Para que el border-radius funcione con la tabla */
+}
+
+#rankingTable th, #rankingTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#rankingTable th {
+    background-color: #38761D; /* Color de encabezado de tabla */
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+#rankingTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#rankingTable tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Posición 1 destacada */
+#rankingTable tbody tr:first-child td {
+    font-weight: bold;
+    color: #DAA520; /* Oro */
+    font-size: 1.1em;
+}
+
+
+/* --- Controles de Admin (Posicionamiento - Manteniendo lógica anterior) --- */
+
+.admin-controls-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50; 
+}
+
+.admin-button {
+    background-color: #333;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-.cta-button:hover {
-    background-color: #0056b3;
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
-.user-name {
-    padding: 10px 20px;
-    font-weight: 600;
-    color: #007bff;
-    background-color: #e9f5ff;
-    border-radius: 5px;
+.admin-button:hover {
+    background-color: #555;
 }
 
-/* --- Estilos del Hero Content (Texto Azul) --- */
-
-.hero-content {
-    padding: 0 20px; 
+.upload-button {
+    background-color: #28a745; /* Verde para el botón de subir */
 }
 
-.text-box {
-    max-width: 550px;
+.upload-button:hover {
+    background-color: #1e7e34;
 }
 
-.hero-content h1 {
-    font-size: 2.8em;
-    font-weight: 800;
-    color: white; 
-    margin-bottom: 15px;
-}
-
-.hero-content p {
-    font-size: 1.1em;
-    color: #cce0ff;
-    margin-bottom: 30px;
-}
-
-.explorar-button {
-    background-color: white;
-    color: #007bff;
-    border: 2px solid white;
-    padding: 12px 30px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1.1em;
-}
-
-/* --- Estilos del Modal de Usuario (Solo si se requiere distinción) --- */
+/* --- Modal Estilos --- */
 
 .modal {
     display: none;
     position: fixed;
-    z-index: 100;
+    z-index: 100; 
     left: 0;
     top: 0;
     width: 100%;
@@ -167,4 +151,49 @@ html, body {
     line-height: 1;
 }
 
-/* ... otros estilos de modal ... */
+.close-button:hover, .close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-group input[type="text"],
+.input-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-submit-button {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+.login-submit-button:hover {
+    background-color: #0056b3;
+}
