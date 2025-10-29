@@ -58,46 +58,163 @@
 
 
     <script>
-        // --- DATA DE ADMIN ---
-        const ADMIN_USER = "subcoloma";
-        const ADMIN_PASS = "654321";
+    // --- DATA DE ADMIN ---
+    const ADMIN_USER = "subcoloma";
+    const ADMIN_PASS = "654321";
 
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- ELEMENTOS DEL ADMIN Y TABLA ---
-            const adminBtn = document.getElementById("adminBtn");
-            const adminModal = document.getElementById("loginModal");
-            const closeLogin = document.getElementById("closeLogin");
-            const loginSubmit = document.getElementById("loginSubmit");
-            const uploadBtn = document.getElementById("uploadBtn");
-            const csvFileInput = document.getElementById("csvFile"); 
-            const rankingBody = document.querySelector("#rankingTable tbody"); 
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- ELEMENTOS DEL ADMIN Y TABLA ---
+        const adminBtn = document.getElementById("adminBtn");
+        const adminModal = document.getElementById("loginModal");
+        const closeLogin = document.getElementById("closeLogin");
+        const loginSubmit = document.getElementById("loginSubmit");
+        const uploadBtn = document.getElementById("uploadBtn");
+        const csvFileInput = document.getElementById("csvFile"); 
+        const rankingBody = document.querySelector("#rankingTable tbody"); 
 
-            // Función para limpiar los campos del login de admin
-            function resetAdminLoginForm() {
-                document.getElementById("username").value = "";
-                document.getElementById("password").value = "";
-            }
+        // Función para limpiar los campos del login de admin
+        function resetAdminLoginForm() {
+            const usernameInput = adminModal.querySelector("#username");
+            const passwordInput = adminModal.querySelector("#password");
+            if (usernameInput) usernameInput.value = "";
+            if (passwordInput) passwordInput.value = "";
+        }
 
-            // *******************************************************************
-            // LÓGICA DE LOGIN DE ADMINISTRADOR
-            // *******************************************************************
+        // *******************************************************************
+        // LÓGICA DE LOGIN DE ADMINISTRADOR
+        // *******************************************************************
 
-            // Abrir modal de Admin
+        // CORRECCIÓN CLAVE: Abrir modal de Admin
+        if (adminBtn) {
             adminBtn.addEventListener("click", () => {
                 adminModal.style.display = "block";
                 resetAdminLoginForm(); 
             });
-
-            // Cerrar modal de Admin
+        }
+        
+        // Cerrar modal de Admin
+        if (closeLogin) {
             closeLogin.addEventListener("click", () => {
                 adminModal.style.display = "none";
             });
+        }
 
-            // Verificar login de Admin
+        // Verificar login de Admin
+        if (loginSubmit) {
             loginSubmit.addEventListener("click", () => {
-                const user = document.getElementById("username").value.trim();
-                const pass = document.getElementById("password").value.trim();
+                const user = adminModal.querySelector("#username").value.trim();
+                const pass = adminModal.querySelector("#password").value.trim();
 
                 if (user === ADMIN_USER && pass === ADMIN_PASS) {
                     adminModal.style.display = "none";
+                    adminBtn.style.display = "none";
+                    uploadBtn.style.display = "block";
+                    alert("Acceso concedido. Botón de subir CSV activado.");
+                } else {
+                    alert("Usuario o contraseña incorrectos");
+                    adminModal.querySelector("#password").value = "";
+                }
+            });
+        }
+
+        // Cerrar modal si se hace clic fuera
+        window.addEventListener("click", (e) => {
+            if (e.target === adminModal) {
+                adminModal.style.display = "none";
+            }
+        });
+
+        // *******************************************************************
+        // LÓGICA: CARGA Y PROCESAMIENTO DE CSV
+        // *******************************************************************
+        
+        // 1. Al hacer clic en "Subir CSV", se activa el input de archivo
+        if (uploadBtn) {
+            uploadBtn.addEventListener("click", () => {
+                csvFileInput.click();
+            });
+        }
+
+        // 2. Cuando se selecciona un archivo, se lee y procesa
+        if (csvFileInput) {
+            csvFileInput.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    const csvData = event.target.result;
+                    const players = parseAndSortCSV(csvData); 
+                    updateRankingTable(players); 
+                    alert("Ranking actualizado exitosamente con " + players.length + " jugadores.");
+                    // Resetear el input para permitir cargar el mismo archivo dos veces
+                    csvFileInput.value = ''; 
+                };
+
+                // Leer el archivo como texto (encoding UTF-8)
+                reader.readAsText(file, 'UTF-8');
+            });
+        }
+
+
+        /**
+         * Parsea la data del CSV (separado por punto y coma), 
+         * omite el encabezado y ordena por puntos.
+         */
+        function parseAndSortCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim() !== '');
+            // Omitimos la primera línea (encabezado)
+            const dataLines = lines.slice(1);
+            const players = [];
+
+            dataLines.forEach(line => {
+                // Usamos el punto y coma (;) como delimitador
+                const columns = line.split(';').map(col => col.trim());
+                
+                // Asumiendo que Jugador está en la Columna 1 y Puntos en la Columna 2
+                const nombre = columns[0];
+                const puntosStr = columns[1];
+
+                if (nombre && puntosStr) {
+                    // Intentamos convertir los puntos a número
+                    const puntos = parseInt(puntosStr.replace(/\./g, ''), 10);
+                    if (!isNaN(puntos)) {
+                        players.push({ nombre, puntos });
+                    }
+                }
+            });
+
+            // Ordenamos del puntaje mayor al menor
+            players.sort((a, b) => b.puntos - a.puntos); 
+
+            return players;
+        }
+
+        /**
+         * Actualiza el cuerpo de la tabla con los nuevos datos.
+         */
+        function updateRankingTable(players) {
+            if (!rankingBody) return; // Si la tabla no existe, salimos
+
+            rankingBody.innerHTML = ''; // Limpiar contenido actual
+
+            players.forEach((player, index) => {
+                const row = rankingBody.insertRow();
+                
+                // Columna 1: Posición (números consecutivos a partir del 1)
+                const posCell = row.insertCell();
+                posCell.textContent = index + 1; 
+
+                // Columna 2: Jugador
+                const nameCell = row.insertCell();
+                nameCell.textContent = player.nombre; 
+
+                // Columna 3: Puntos
+                const pointsCell = row.insertCell();
+                pointsCell.textContent = player.puntos.toLocaleString('es-AR');
+            });
+        }
+    });
+</script>
