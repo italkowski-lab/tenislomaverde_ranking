@@ -23,38 +23,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Juan Martín</td>
-                    <td>1500</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Esteban Pérez</td>
-                    <td>1450</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Mariana Lopez</td>
-                    <td>1320</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Sebastián Gómez</td>
-                    <td>1280</td>
-                </tr>
+                <tr><td>1</td><td>Juan Martín</td><td>1500</td></tr>
+                <tr><td>2</td><td>Esteban Pérez</td><td>1450</td></tr>
+                <tr><td>3</td><td>Mariana Lopez</td><td>1320</td></tr>
+                <tr><td>4</td><td>Sebastián Gómez</td><td>1280</td></tr>
             </tbody>
         </table>
     </main>
 
     <div class="admin-controls-container">
-        <div class="admin-controls-container">
-    <button id="adminBtn" class="admin-button">Admin</button>
-    
-    <button id="uploadBtn" class="admin-button upload-button" style="display: none;">Subir CSV</button>
-    
-    <input type="file" id="csvFile" accept=".csv" style="display: none;">
-</div>
+        <button id="adminBtn" class="admin-button">Admin</button>
+        <button id="uploadBtn" class="admin-button upload-button" style="display: none;">Subir CSV</button>
+        
+        <input type="file" id="csvFile" accept=".csv" style="display: none;">
     </div>
 
     <div id="loginModal" class="modal">
@@ -83,18 +64,24 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- ELEMENTOS DEL ADMIN ---
+            // --- ELEMENTOS DEL ADMIN Y TABLA ---
             const adminBtn = document.getElementById("adminBtn");
             const adminModal = document.getElementById("loginModal");
             const closeLogin = document.getElementById("closeLogin");
             const loginSubmit = document.getElementById("loginSubmit");
             const uploadBtn = document.getElementById("uploadBtn");
+            const csvFileInput = document.getElementById("csvFile"); 
+            const rankingBody = document.querySelector("#rankingTable tbody"); 
 
             // Función para limpiar los campos del login de admin
             function resetAdminLoginForm() {
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
             }
+
+            // *******************************************************************
+            // LÓGICA DE LOGIN DE ADMINISTRADOR
+            // *******************************************************************
 
             // Abrir modal de Admin
             adminBtn.addEventListener("click", () => {
@@ -114,22 +101,3 @@
 
                 if (user === ADMIN_USER && pass === ADMIN_PASS) {
                     adminModal.style.display = "none";
-                    adminBtn.style.display = "none";
-                    uploadBtn.style.display = "block";
-                    alert("Acceso concedido. Botón de subir CSV activado.");
-                } else {
-                    alert("Usuario o contraseña incorrectos");
-                    document.getElementById("password").value = "";
-                }
-            });
-
-            // Cerrar modal si se hace clic fuera
-            window.addEventListener("click", (e) => {
-                if (e.target === adminModal) {
-                    adminModal.style.display = "none";
-                }
-            });
-        });
-    </script>
-</body>
-</html>
