@@ -1,0 +1,56 @@
+/* admin.css */
+
+/* --- Controles de Admin (Posicionamiento) --- */
+
+.admin-controls-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50; /* Z-index alto para que esté visible sobre la Home */
+}
+
+.admin-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.admin-button:hover {
+    background-color: #555;
+}
+
+.upload-button {
+    background-color: #28a745; /* Verde para el botón de subir */
+}
+
+.upload-button:hover {
+    background-color: #1e7e34;
+}
+
+/* --- Modal Estilos de Admin (Reutilizando clases 'modal' y 'modal-content' pero con ajuste) --- */
+
+/* Aseguramos que el modal de admin use el z-index 100 para superponer */
+.admin-login-modal {
+    z-index: 110; 
+}
+
+.admin-login-modal .modal-content {
+    /* Ajustes específicos para el modal de admin si son necesarios */
+}
+
+.login-submit-button {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
