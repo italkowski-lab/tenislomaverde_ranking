@@ -79,3 +79,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+document.addEventListener("DOMContentLoaded", function() {
+  const adminBtn = document.getElementById("adminBtn");
+  const loginModal = document.getElementById("loginModal");
+  const closeLogin = document.getElementById("closeLogin");
+  const loginSubmit = document.getElementById("loginSubmit");
+  const uploadBtn = document.getElementById("uploadBtn");
+
+  const ADMIN_USER = "subcoloma";
+  const ADMIN_PASS = "654321";
+
+  // Abrir modal
+  adminBtn.addEventListener("click", () => {
+    loginModal.style.display = "block";
+  });
+
+  // Cerrar modal
+  closeLogin.addEventListener("click", () => {
+    loginModal.style.display = "none";
+  });
+
+  // Verificar login
+  loginSubmit.addEventListener("click", () => {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+
+    if (user === ADMIN_USER && pass === ADMIN_PASS) {
+      loginModal.style.display = "none";
+      adminBtn.style.display = "none";
+      uploadBtn.style.display = "block";
+      alert("Acceso concedido");
+    } else {
+      alert("Usuario o contraseña incorrectos");
+    }
+  });
+
+  // Cerrar modal si se hace clic fuera
+  window.addEventListener("click", (e) => {
+    if (e.target === loginModal) {
+      loginModal.style.display = "none";
+    }
+  });
+});
